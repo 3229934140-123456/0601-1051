@@ -3,29 +3,272 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
+  padding-bottom: 140rpx;
+}
+
+.header {
+  background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
+  padding: $spacing-xl $page-padding;
+  padding-top: calc(#{$spacing-xl} + env(safe-area-inset-top));
+  color: $color-text-white;
+  border-bottom-left-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+  margin-bottom: $spacing-md;
+}
+
+.headerBack {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  margin-bottom: $spacing-lg;
+}
+
+.backIcon {
+  width: 64rpx;
+  height: 64rpx;
+  display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 $page-padding;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: $radius-round;
+  color: $color-text-white;
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-right: $spacing-md;
 }
 
-.icon {
-  font-size: 160rpx;
-  margin-bottom: $spacing-lg;
-  color: $color-resource;
-}
-
-.title {
-  font-size: $font-size-xl;
+.headerTitle {
+  font-size: $font-size-lg;
   font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.roomCard {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.roomName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
   color: $color-text-primary;
   margin-bottom: $spacing-sm;
 }
 
-.desc {
+.roomMeta {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-md;
+}
+
+.roomFacilities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8rpx;
+}
+
+.facilityTag {
+  padding: 4rpx 16rpx;
+  background: rgba(114, 46, 209, 0.08);
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+  color: $color-resource;
+}
+
+.section {
+  background: $color-bg-card;
+  margin: 0 $page-padding $spacing-md;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+}
+
+.sectionTitle {
   font-size: $font-size-md;
-  color: $color-text-tertiary;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+  display: block;
+}
+
+.dateRow {
+  display: flex;
+  gap: $spacing-sm;
+  overflow-x: auto;
+  padding-bottom: 4rpx;
+}
+
+.dateItem {
+  flex-shrink: 0;
+  width: 110rpx;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
   text-align: center;
-  line-height: 1.6;
+  transition: all $transition-base;
+}
+
+.dateItemActive {
+  background: rgba(114, 46, 209, 0.1);
+  border-color: $color-resource;
+
+  .dateWeek {
+    color: $color-resource;
+  }
+  .dateDay {
+    color: $color-resource;
+    font-weight: $font-weight-semibold;
+  }
+}
+
+.dateWeek {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  margin-bottom: 4rpx;
+}
+
+.dateDay {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+}
+
+.timeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $spacing-sm;
+}
+
+.timeSlot {
+  padding: $spacing-md $spacing-sm;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  text-align: center;
+  transition: all $transition-base;
+}
+
+.timeSlotActive {
+  background: rgba(114, 46, 209, 0.1);
+  border-color: $color-resource;
+  color: $color-resource;
+  font-weight: $font-weight-semibold;
+}
+
+.timeSlotDisabled {
+  opacity: 0.5;
+  background: $color-bg-hover;
+  color: $color-text-tertiary;
+  cursor: not-allowed;
+}
+
+.formItem {
+  margin-bottom: $spacing-md;
+}
+
+.formLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.formLabelRequired::before {
+  content: '*';
+  color: $color-error;
+  margin-right: 4rpx;
+}
+
+.formInput {
+  width: 100%;
+  height: 80rpx;
+  padding: 0 $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  box-sizing: border-box;
+}
+
+.summary {
+  background: rgba(114, 46, 209, 0.06);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-sm;
+}
+
+.summaryRow {
+  display: flex;
+  justify-content: space-between;
+  padding: 8rpx 0;
+  font-size: $font-size-sm;
+}
+
+.summaryLabel {
+  color: $color-text-secondary;
+}
+
+.summaryValue {
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.summaryPrice {
+  color: $color-resource;
+  font-weight: $font-weight-bold;
+  font-size: $font-size-lg;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+  align-items: center;
+}
+
+.totalPrice {
+  font-size: $font-size-lg;
+  color: $color-resource;
+  font-weight: $font-weight-bold;
+}
+
+.btnCancel {
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnSubmit {
+  flex: 2;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnSubmitDisabled {
+  background: $color-bg-hover;
+  color: $color-text-disabled;
 }

@@ -19,10 +19,26 @@ const iconMap: Record<string, string> = {
   more: '···'
 };
 
+const tabBarMap: Record<string, string> = {
+  home: '/pages/home/index',
+  access: '/pages/access/index',
+  service: '/pages/service/index',
+  resource: '/pages/resource/index',
+  message: '/pages/message/index'
+};
+
 const QuickEntryGrid: React.FC<QuickEntryProps> = ({ data }) => {
   const handleClick = (item: QuickEntry) => {
-    console.log('[QuickEntry] 点击入口:', item.key);
+    console.log('[QuickEntry] 点击入口:', item.key, item.pagePath);
     if (item.pagePath) {
+      if (item.pagePath.startsWith('tabBar:')) {
+        const key = item.pagePath.replace('tabBar:', '');
+        const tabPath = tabBarMap[key];
+        if (tabPath) {
+          Taro.switchTab({ url: tabPath });
+          return;
+        }
+      }
       Taro.navigateTo({ url: item.pagePath });
     } else {
       Taro.showToast({ title: `${item.title}功能开发中`, icon: 'none' });

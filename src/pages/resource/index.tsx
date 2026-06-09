@@ -4,18 +4,23 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import StatusTag from '@/components/StatusTag';
-import { meetingRooms, bookedMeetings, bookedDesks, elevatorSlots } from '@/data/resource';
+import { useAppStore } from '@/store';
+import { meetingRooms, desks, elevatorSlots } from '@/data/resource';
 
 const ResourcePage: React.FC = () => {
   const [activeResource, setActiveResource] = useState<'meeting' | 'desk' | 'elevator'>('meeting');
+  const bookedMeetings = useAppStore((s) => s.bookedMeetings);
+  const bookedDesks = useAppStore((s) => s.bookedDesks);
+  const addBookedMeeting = useAppStore((s) => s.addBookedMeeting);
+  const addBookedDesk = useAppStore((s) => s.addBookedDesk);
 
   useEffect(() => {
     console.log('[ResourcePage] 页面加载');
   }, []);
 
-  const handleBookMeeting = (roomId: string) => {
-    console.log('[ResourcePage] 预订会议室:', roomId);
-    Taro.navigateTo({ url: '/pages/meeting-book/index' });
+  const handleBookMeeting = (roomId: string, roomName: string) => {
+    console.log('[ResourcePage] 预订会议室:', roomId, roomName);
+    Taro.navigateTo({ url: `/pages/meeting-book/index?roomId=${roomId}&roomName=${encodeURIComponent(roomName)}` });
   };
 
   const handleBookDesk = () => {
@@ -121,9 +126,9 @@ const ResourcePage: React.FC = () => {
                   <StatusTag status={room.status} />
                   <View
                     className={classnames(styles.bookBtn, room.status !== 'available' && styles.bookBtnDisabled)}
-                    onClick={() => room.status === 'available' && handleBookMeeting(room.id)}
+                    onClick={() => room.status === 'available' && handleBookMeeting(room.id, room.name)}
                   >
-                    <Text>{room.status === 'available' ? '立即预订' : '不可预订'}</Text>
+                    <Text>{room.status === 'available' ? '立即预订' : room.status === 'maintenance' ? '维护中' : '使用中'}</Text>
                   </View>
                 </View>
               </View>

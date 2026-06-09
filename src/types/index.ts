@@ -43,11 +43,13 @@ export interface TodoItem {
   priority: 'high' | 'medium' | 'low';
 }
 
-// 工单类型
+export type ServiceTicketType = 'repair' | 'complaint' | 'cleaning';
+export type TicketUrgency = 'low' | 'medium' | 'high';
+
 export interface ServiceTicket {
   id: string;
   title: string;
-  type: 'repair' | 'complaint' | 'cleaning';
+  type: ServiceTicketType;
   description: string;
   status: 'pending' | 'processing' | 'completed' | 'cancelled';
   createTime: string;
@@ -58,6 +60,8 @@ export interface ServiceTicket {
   location: string;
   contactName: string;
   contactPhone: string;
+  urgency?: TicketUrgency;
+  typeText?: string;
 }
 
 // 会议室类型

@@ -1,29 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import StatusTag from '@/components/StatusTag';
-import { ticketList } from '@/data/service';
+import { useAppStore } from '@/store';
 import type { ServiceTicket } from '@/types';
 
 type TabType = 'all' | 'pending' | 'processing' | 'completed';
 
 const ServicePage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<TabType>('all');
-  const [filteredTickets, setFilteredTickets] = useState<ServiceTicket[]>(ticketList);
+  const tickets = useAppStore((s) => s.tickets);
+  console.log('[ServicePage] 工单数据:', tickets.length);
 
   useEffect(() => {
     console.log('[ServicePage] 页面加载');
   }, []);
 
-  useEffect(() => {
-    if (activeTab === 'all') {
-      setFilteredTickets(ticketList);
-    } else {
-      setFilteredTickets(ticketList.filter(t => t.status === activeTab));
-    }
-  }, [activeTab]);
+  const filteredTickets = useMemo(() => {
+    if (activeTab === 'all') return tickets;
+    return tickets.filter((t) => t.status === activeTab);
+  }, [activeTab, tickets]);
 
   const typeConfig = {
     repair: { label: '报修', icon: '修', bg: 'rgba(247, 186, 30, 0.15', color: '#F7BA1E' },
@@ -54,8 +52,8 @@ const ServicePage: React.FC = () => {
     Taro.navigateTo({ url: `/pages/ticket-detail/index?id=${ticketId}` });
   };
 
-  const pendingCount = ticketList.filter(t => t.status === 'pending' || t.status === 'processing').length;
-  const completedCount = ticketList.filter(t => t.status === 'completed').length;
+  const pendingCount = tickets.filter(t => t.status === 'pending' || t.status === 'processing').length;
+  const completedCount = tickets.filter(t => t.status === 'completed').length;
 
   const tabs: { key: TabType; label: string }[] = [
     { key: 'all', label: '全部' },
@@ -71,7 +69,7 @@ const ServicePage: React.FC = () => {
         <Text className={styles.headerDesc}>快速提交服务需求，实时跟踪处理进度</Text>
         <View className={styles.statRow}>
           <View className={styles.statItem}>
-            <Text className={styles.statNum}>{ticketList.length}</Text>
+            <Text className={styles.statNum}>{tickets.length}</Text>
             <Text className={styles.statLabel}>全部工单</Text>
           </View>
           <View className={styles.statItem}>

@@ -30,6 +30,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  cursor: pointer;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.98);
+  }
 }
 
 .qrTitle {
@@ -186,7 +192,8 @@
 
 .sectionMore {
   font-size: $font-size-sm;
-  color: $color-text-tertiary;
+  color: $color-access;
+  font-weight: $font-weight-medium;
 }
 
 .visitorItem {
@@ -293,4 +300,124 @@
   font-size: $font-size-sm;
   color: $color-text-tertiary;
   margin-top: 4rpx;
+}
+
+.emptyHint {
+  padding: $spacing-lg 0;
+  text-align: center;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sheet {
+  width: 100%;
+  background: $color-bg-card;
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
+  padding: $spacing-lg $page-padding;
+  padding-bottom: calc(#{$spacing-lg} + env(safe-area-inset-bottom));
+}
+
+.sheetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-lg;
+}
+
+.sheetTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sheetClose {
+  width: 56rpx;
+  height: 56rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-tertiary;
+  font-size: $font-size-xl;
+}
+
+.sheetItem {
+  margin-bottom: $spacing-lg;
+}
+
+.sheetLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.sheetLabelRequired::before {
+  content: '*';
+  color: $color-error;
+  margin-right: 4rpx;
+}
+
+.sheetInput {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  text-transform: uppercase;
+  box-sizing: border-box;
+}
+
+.sheetRow {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.sheetTag {
+  flex: 1;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-align: center;
+  transition: all $transition-base;
+}
+
+.sheetTagActive {
+  background: rgba(114, 46, 209, 0.1);
+  border-color: $color-resource;
+  color: $color-resource;
+  font-weight: $font-weight-medium;
+}
+
+.sheetBtn {
+  width: 100%;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, #722ED1 0%, #9254DE 100%);
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: $spacing-md;
 }

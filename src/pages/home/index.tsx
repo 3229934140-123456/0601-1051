@@ -46,9 +46,14 @@ const HomePage: React.FC = () => {
     }
   };
 
-  const handleVisitorClick = (visitorId: string) => {
-    console.log('[HomePage] 点击访客:', visitorId);
-    Taro.navigateTo({ url: '/pages/access/index' });
+  const handleVisitorClick = () => {
+    console.log('[HomePage] 点击访客，跳转通行页');
+    Taro.switchTab({ url: '/pages/access/index' });
+  };
+
+  const handleViewAllVisitors = () => {
+    console.log('[HomePage] 查看全部访客');
+    Taro.switchTab({ url: '/pages/access/index' });
   };
 
   const handleTodoClick = (todoId: string) => {
@@ -119,7 +124,7 @@ const HomePage: React.FC = () => {
         <View className={styles.visitorCard}>
           <View className={styles.sectionHeader} style={{ padding: 0, marginBottom: 0 }}>
             <Text className={styles.sectionTitle}>今日访客</Text>
-            <Text className={styles.sectionMore}>查看全部 ›</Text>
+            <Text className={styles.sectionMore} onClick={handleViewAllVisitors}>查看全部 ›</Text>
           </View>
           <View style={{ marginTop: '$spacing-md' }}>
             {todayVisitors.map((visitor) => (

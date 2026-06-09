@@ -120,11 +120,11 @@ export const todoList: TodoItem[] = [
 
 export const quickEntries: QuickEntry[] = [
   { key: 'visitor', title: '访客申请', iconBg: 'rgba(22, 93, 255, 0.1)', iconColor: '#165DFF', pagePath: '/pages/visitor-apply/index' },
-  { key: 'qrcode', title: '门禁码', iconBg: 'rgba(15, 198, 194, 0.1)', iconColor: '#0FC6C2' },
-  { key: 'repair', title: '报修', iconBg: 'rgba(247, 186, 30, 0.1)', iconColor: '#F7BA1E', pagePath: '/pages/ticket-submit/index' },
-  { key: 'meeting', title: '会议室', iconBg: 'rgba(114, 46, 209, 0.1)', iconColor: '#722ED1', pagePath: '/pages/meeting-book/index' },
+  { key: 'qrcode', title: '门禁码', iconBg: 'rgba(15, 198, 194, 0.1)', iconColor: '#0FC6C2', pagePath: 'tabBar:access' },
+  { key: 'repair', title: '报修', iconBg: 'rgba(247, 186, 30, 0.1)', iconColor: '#F7BA1E', pagePath: '/pages/ticket-submit/index?type=repair' },
+  { key: 'meeting', title: '会议室', iconBg: 'rgba(114, 46, 209, 0.1)', iconColor: '#722ED1', pagePath: 'tabBar:resource' },
   { key: 'desk', title: '工位预订', iconBg: 'rgba(255, 125, 0, 0.1)', iconColor: '#FF7D00', pagePath: '/pages/desk-book/index' },
-  { key: 'complaint', title: '投诉建议', iconBg: 'rgba(245, 63, 63, 0.1)', iconColor: '#F53F3F' },
-  { key: 'cleaning', title: '保洁服务', iconBg: 'rgba(0, 180, 42, 0.1)', iconColor: '#00B42A' },
+  { key: 'complaint', title: '投诉建议', iconBg: 'rgba(245, 63, 63, 0.1)', iconColor: '#F53F3F', pagePath: '/pages/ticket-submit/index?type=complaint' },
+  { key: 'cleaning', title: '保洁服务', iconBg: 'rgba(0, 180, 42, 0.1)', iconColor: '#00B42A', pagePath: '/pages/ticket-submit/index?type=cleaning' },
   { key: 'more', title: '更多', iconBg: 'rgba(134, 144, 156, 0.1)', iconColor: '#86909C' }
 ];

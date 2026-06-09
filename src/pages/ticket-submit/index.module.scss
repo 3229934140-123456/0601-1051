@@ -3,29 +3,208 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
+  padding-bottom: 140rpx;
+}
+
+.typeCard {
+  background: $color-bg-card;
+  margin: $spacing-md $page-padding;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+}
+
+.typeTitle {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-md;
+  display: block;
+}
+
+.typeRow {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.typeItem {
+  flex: 1;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 0 $page-padding;
+  transition: all $transition-base;
 }
 
-.icon {
-  font-size: 160rpx;
-  margin-bottom: $spacing-lg;
-  color: $color-service;
+.typeItemActive {
+  border-color: $color-service;
+  background: rgba(247, 186, 30, 0.08);
+
+  .typeIcon {
+    transform: scale(1.1);
+  }
+  .typeName {
+    color: $color-service;
+    font-weight: $font-weight-semibold;
+  }
 }
 
-.title {
-  font-size: $font-size-xl;
+.typeIcon {
+  font-size: 48rpx;
+  margin-bottom: 8rpx;
+  transition: transform $transition-base;
+}
+
+.typeName {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+}
+
+.formCard {
+  background: $color-bg-card;
+  margin: 0 $page-padding $spacing-md;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+}
+
+.formTitle {
+  font-size: $font-size-lg;
   font-weight: $font-weight-semibold;
   color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-md;
+  border-bottom: 1rpx solid $color-divider;
+  display: block;
+}
+
+.formItem {
+  margin-bottom: $spacing-lg;
+}
+
+.formLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.formLabelRequired::before {
+  content: '*';
+  color: $color-error;
+  margin-right: 4rpx;
+}
+
+.formInput {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  box-sizing: border-box;
+}
+
+.formTextarea {
+  width: 100%;
+  min-height: 200rpx;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+.locationRow {
+  display: flex;
+  gap: $spacing-sm;
   margin-bottom: $spacing-sm;
 }
 
-.desc {
-  font-size: $font-size-md;
-  color: $color-text-tertiary;
+.locationTag {
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+}
+
+.locationTagActive {
+  background: rgba(247, 186, 30, 0.1);
+  border-color: $color-service;
+  color: $color-service;
+  font-weight: $font-weight-medium;
+}
+
+.urgencyRow {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.urgencyItem {
+  flex: 1;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
   text-align: center;
-  line-height: 1.6;
+  transition: all $transition-base;
+}
+
+.urgencyItemActive {
+  background: rgba(247, 186, 30, 0.1);
+  border-color: $color-service;
+  color: $color-service;
+  font-weight: $font-weight-semibold;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+}
+
+.btnCancel {
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btnSubmit {
+  flex: 2;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, #F7BA1E 0%, #FFC53D 100%);
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

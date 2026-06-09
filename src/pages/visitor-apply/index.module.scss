@@ -3,29 +3,201 @@
 .page {
   min-height: 100vh;
   background: $color-bg-page;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 0 $page-padding;
+  padding-bottom: 140rpx;
 }
 
-.icon {
-  font-size: 160rpx;
+.formCard {
+  background: $color-bg-card;
+  margin: $spacing-md $page-padding;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+}
+
+.formTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
   margin-bottom: $spacing-lg;
+  padding-bottom: $spacing-md;
+  border-bottom: 1rpx solid $color-divider;
+  display: block;
+}
+
+.formItem {
+  margin-bottom: $spacing-lg;
+}
+
+.formLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.formLabelRequired::before {
+  content: '*';
+  color: $color-error;
+  margin-right: 4rpx;
+}
+
+.formInput {
+  width: 100%;
+  height: 88rpx;
+  padding: 0 $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  box-sizing: border-box;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background: $color-bg-card;
+  }
+}
+
+.formTextarea {
+  width: 100%;
+  min-height: 180rpx;
+  padding: $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  box-sizing: border-box;
+  line-height: 1.6;
+  transition: all $transition-base;
+
+  &:focus {
+    border-color: $color-primary;
+    background: $color-bg-card;
+  }
+}
+
+.pickerRow {
+  display: flex;
+  align-items: center;
+  height: 88rpx;
+  padding: 0 $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-md;
+}
+
+.pickerText {
+  color: $color-text-primary;
+  flex: 1;
+}
+
+.pickerPlaceholder {
+  color: $color-text-tertiary;
+}
+
+.pickerArrow {
+  color: $color-text-tertiary;
+  font-size: $font-size-md;
+}
+
+.reasonTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.reasonTag {
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  transition: all $transition-base;
+}
+
+.reasonTagActive {
+  background: rgba(22, 93, 255, 0.1);
+  border-color: $color-primary;
   color: $color-primary;
 }
 
-.title {
-  font-size: $font-size-xl;
-  font-weight: $font-weight-semibold;
-  color: $color-text-primary;
-  margin-bottom: $spacing-sm;
+.tipBox {
+  background: rgba(22, 93, 255, 0.06);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin: 0 $page-padding $spacing-md;
 }
 
-.desc {
-  font-size: $font-size-md;
-  color: $color-text-tertiary;
-  text-align: center;
+.tipTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-primary;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.tipText {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
   line-height: 1.6;
+}
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: $spacing-md $page-padding;
+  padding-bottom: calc(#{$spacing-md} + env(safe-area-inset-bottom));
+  background: $color-bg-card;
+  box-shadow: 0 -4rpx 16rpx rgba(0, 0, 0, 0.06);
+  display: flex;
+  gap: $spacing-md;
+}
+
+.btnCancel {
+  flex: 1;
+  height: $button-height-lg;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.btnSubmit {
+  flex: 2;
+  height: $button-height-lg;
+  background: linear-gradient(135deg, #165DFF 0%, #4080FF 100%);
+  border-radius: $radius-button;
+  font-size: $font-size-md;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}
+
+.btnSubmitDisabled {
+  background: $color-bg-hover;
+  color: $color-text-disabled;
 }

@@ -135,6 +135,29 @@
   color: $color-text-primary;
 }
 
+.areaFilter {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-md;
+}
+
+.areaChip {
+  padding: 10rpx 28rpx;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  background: $color-bg-page;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+}
+
+.areaChipActive {
+  background: rgba(255, 125, 0, 0.1);
+  border-color: #FF7D00;
+  color: #FF7D00;
+  font-weight: $font-weight-medium;
+}
+
 .deskGrid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

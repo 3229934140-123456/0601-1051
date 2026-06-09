@@ -11,6 +11,7 @@ export default defineAppConfig({
     'pages/meeting-book/index',
     'pages/desk-book/index',
     'pages/message-detail/index',
+    'pages/booking-detail/index',
     'pages/profile/index'
   ],
   window: {

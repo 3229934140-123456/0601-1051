@@ -145,4 +145,17 @@ export interface BookingRecord {
   date: string;
   time: string;
   status: 'confirmed' | 'cancelled';
+  // 会议室专属
+  topic?: string;
+  attendees?: number;
+  facilities?: string[];
+  // 工位专属
+  applicant?: string;
+  location?: string;
+  // 货梯专属
+  capacity?: number;
+  capacityLeft?: number;
+  // 通用
+  purpose?: string;
+  createTime?: string;
 }

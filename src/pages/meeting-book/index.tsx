@@ -61,6 +61,10 @@ const MeetingBookPage: React.FC = () => {
       Taro.showToast({ title: '请输入会议主题', icon: 'none' });
       return false;
     }
+    if (!form.attendees || form.attendees <= 0) {
+      Taro.showToast({ title: '请输入参会人数', icon: 'none' });
+      return false;
+    }
     if (room && form.attendees > room.capacity) {
       Taro.showToast({ title: `最多容纳${room.capacity}人`, icon: 'none' });
       return false;
@@ -88,7 +92,10 @@ const MeetingBookPage: React.FC = () => {
       type: 'meeting',
       title: room?.name || roomName,
       date: form.date,
-      time: form.time
+      time: form.time,
+      topic: form.title,
+      attendees: form.attendees,
+      facilities: room?.facilities || []
     });
     Taro.showToast({ title: '预订成功', icon: 'success' });
     setTimeout(() => Taro.switchTab({ url: '/pages/resource/index' }), 1500);

@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import dayjs from 'dayjs';
 import type { Visitor, ServiceTicket, BookingRecord, BookingType } from '@/types';
 import { myVisitors, tempPlates, ticketList, bookedMeetings, bookedDesks } from '@/data';
+import { meetingRooms, elevatorSlots } from '@/data/resource';
 
 interface TempPlate {
   id: string;
@@ -11,21 +12,32 @@ interface TempPlate {
 }
 
 const initBookings: BookingRecord[] = [
-  ...bookedMeetings.map((m: any) => ({
-    id: m.id,
-    type: 'meeting' as BookingType,
-    title: m.roomName,
-    date: m.date,
-    time: m.time,
-    status: m.status
-  })),
+  ...bookedMeetings.map((m: any) => {
+    const room = meetingRooms.find((r) => r.name === m.roomName);
+    return {
+      id: m.id,
+      type: 'meeting' as BookingType,
+      title: m.roomName,
+      date: m.date,
+      time: m.time,
+      status: m.status,
+      topic: '季度产品评审会',
+      attendees: 8,
+      facilities: room?.facilities || [],
+      createTime: '2026-06-09 14:30'
+    };
+  }),
   ...bookedDesks.map((d: any) => ({
     id: d.id,
     type: 'desk' as BookingType,
     title: `工位 ${d.code}`,
     date: d.date,
     time: '全天',
-    status: d.status
+    status: d.status,
+    applicant: '李明',
+    location: `${d.code.startsWith('A') ? 'A' : 'B'}区 · A座18F`,
+    purpose: '出差办公',
+    createTime: '2026-06-09 10:12'
   }))
 ];
 
@@ -45,7 +57,8 @@ interface AppState {
   addTicket: (ticket: Omit<ServiceTicket, 'id' | 'status' | 'progress' | 'createTime' | 'updateTime'>) => void;
 
   addBooking: (booking: Omit<BookingRecord, 'id' | 'status'>) => void;
-  hasDeskBooking: (deskId: string, date: string) => boolean;
+  cancelBooking: (id: string) => void;
+  hasDeskBooking: (deskCode: string, date: string) => boolean;
   hasElevatorBooking: (slotId: string, date: string) => boolean;
 
   setRating: (ticketId: string, rating: number) => void;
@@ -117,14 +130,24 @@ export const useAppStore = create<AppState>((set, get) => ({
     const newBooking: BookingRecord = {
       ...booking,
       id: `b${Date.now()}`,
-      status: 'confirmed'
+      status: 'confirmed',
+      createTime: dayjs().format('YYYY-MM-DD HH:mm')
     };
     set((state) => ({ bookings: [newBooking, ...state.bookings] }));
   },
 
-  hasDeskBooking: (deskId, date) => {
+  cancelBooking: (id) => {
+    console.log('[Store] cancelBooking:', id);
+    set((state) => ({
+      bookings: state.bookings.map((b) =>
+        b.id === id ? { ...b, status: 'cancelled' as const } : b
+      )
+    }));
+  },
+
+  hasDeskBooking: (deskCode, date) => {
     return get().bookings.some(
-      (b) => b.type === 'desk' && b.title.includes(deskId) && b.date === date && b.status === 'confirmed'
+      (b) => b.type === 'desk' && b.title.includes(deskCode) && b.date === date && b.status === 'confirmed'
     );
   },
 

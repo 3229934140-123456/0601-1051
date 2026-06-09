@@ -7,9 +7,12 @@ import { useAppStore } from '@/store';
 import { desks } from '@/data/resource';
 import dayjs from 'dayjs';
 
+type DeskArea = 'all' | 'A' | 'B';
+
 const DeskBookPage: React.FC = () => {
   const addBooking = useAppStore((s) => s.addBooking);
   const bookings = useAppStore((s) => s.bookings);
+  const [deskArea, setDeskArea] = useState<DeskArea>('all');
 
   const dates = useMemo(() => {
     return Array.from({ length: 7 }).map((_, i) => {
@@ -30,6 +33,11 @@ const DeskBookPage: React.FC = () => {
     applicant: '李明',
     purpose: ''
   });
+
+  // 按区域过滤
+  const filteredDesks = useMemo(() => {
+    return deskArea === 'all' ? desks : desks.filter((d) => d.area === `${deskArea}区`);
+  }, [deskArea]);
 
   // 按当前选择的日期动态判断占用状态
   const occupiedCodes = useMemo(() => {
@@ -73,7 +81,10 @@ const DeskBookPage: React.FC = () => {
       type: 'desk',
       title: `工位 ${form.deskCode}`,
       date: form.date,
-      time: '全天'
+      time: '全天',
+      applicant: form.applicant,
+      location: `${form.deskCode.startsWith('A') ? 'A' : 'B'}区 · A座18F`,
+      purpose: form.purpose || undefined
     });
     Taro.showToast({ title: '预订成功', icon: 'success' });
     setTimeout(() => Taro.switchTab({ url: '/pages/resource/index' }), 1500);
@@ -126,8 +137,22 @@ const DeskBookPage: React.FC = () => {
       <View className={styles.section}>
         <Text className={styles.sectionTitle}>选择工位</Text>
         <Text className={styles.sectionSubtitle}>A座18F开放办公区（灰色为已被预订）</Text>
+        <View className={styles.areaFilter}>
+          {(['all', 'A', 'B'] as DeskArea[]).map((area) => (
+            <Text
+              key={area}
+              className={classnames(styles.areaChip, deskArea === area && styles.areaChipActive)}
+              onClick={() => {
+                setDeskArea(area);
+                setForm((f) => ({ ...f, deskId: '', deskCode: '' }));
+              }}
+            >
+              {area === 'all' ? '全部' : `${area}区`}
+            </Text>
+          ))}
+        </View>
         <View className={styles.deskGrid}>
-          {desks.map((desk) => {
+          {filteredDesks.map((desk) => {
             const isOccupied = desk.status !== 'available' || occupiedCodes.includes(desk.code);
             const isSelected = form.deskId === desk.id;
             return (

@@ -343,6 +343,41 @@
   @include text-ellipsis;
 }
 
+.bookingItemCancelled {
+  opacity: 0.6;
+
+  .bookingName, .bookingTime {
+    text-decoration: line-through;
+  }
+}
+
+.filterRow {
+  display: flex;
+  gap: $spacing-xs;
+  flex-wrap: wrap;
+}
+
+.filterChip {
+  padding: 10rpx 24rpx;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  background: $color-bg-hover;
+  border-radius: $radius-button;
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.filterChipActive {
+  background: rgba(114, 46, 209, 0.15);
+  color: #722ED1;
+  border-color: #722ED1;
+  font-weight: $font-weight-medium;
+}
+
 .emptyHint {
   text-align: center;
   padding: $spacing-xl 0;

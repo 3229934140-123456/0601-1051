@@ -9,10 +9,20 @@ import { meetingRooms, desks, elevatorSlots } from '@/data/resource';
 import dayjs from 'dayjs';
 import type { BookingType } from '@/types';
 
+type BookingFilterType = 'all' | 'meeting' | 'desk' | 'elevator';
+type BookingFilterDate = 'all' | 'today' | 'week';
+type DeskArea = 'all' | 'A' | 'B';
+
 const ResourcePage: React.FC = () => {
   const [activeResource, setActiveResource] = useState<'meeting' | 'desk' | 'elevator'>('meeting');
   const bookings = useAppStore((s) => s.bookings);
   const addBooking = useAppStore((s) => s.addBooking);
+
+  // 我的预订筛选
+  const [filterType, setFilterType] = useState<BookingFilterType>('all');
+  const [filterDate, setFilterDate] = useState<BookingFilterDate>('all');
+  // 工位区域筛选
+  const [deskArea, setDeskArea] = useState<DeskArea>('all');
 
   // 货梯预订底部弹层
   const [showElevatorSheet, setShowElevatorSheet] = useState(false);
@@ -30,16 +40,36 @@ const ResourcePage: React.FC = () => {
     });
   }, []);
 
-  // 统计某个日期的货梯预订数量（模拟 booked 字段）
+  // 统计某个日期的货梯预订数量
   const getElevatorBooked = (slotId: string, date: string) => {
     const count = bookings.filter(
-      (b) => b.type === 'elevator' && b.title.includes(slotId) && b.date === date
+      (b) => b.type === 'elevator' && b.title.includes(slotId) && b.date === date && b.status === 'confirmed'
     ).length;
     const baseSlot = elevatorSlots.find((s) => s.id === slotId);
     return (baseSlot?.booked || 0) + count;
   };
 
   const availableRooms = meetingRooms.filter((r) => r.status === 'available').length;
+
+  // 筛选后的预订列表
+  const filteredBookings = useMemo(() => {
+    return bookings.filter((b) => {
+      if (filterType !== 'all' && b.type !== filterType) return false;
+      if (filterDate === 'today') {
+        if (b.date !== dayjs().format('YYYY-MM-DD')) return false;
+      } else if (filterDate === 'week') {
+        const today = dayjs();
+        const bookingDate = dayjs(b.date);
+        if (bookingDate.isBefore(today, 'day') || bookingDate.isAfter(today.add(6, 'day'), 'day')) return false;
+      }
+      return true;
+    });
+  }, [bookings, filterType, filterDate]);
+
+  // 按区域筛选工位
+  const filteredDesks = useMemo(() => {
+    return deskArea === 'all' ? desks : desks.filter((d) => d.area === `${deskArea}区`);
+  }, [deskArea]);
 
   const handleBookMeeting = (roomId: string, roomName: string) => {
     console.log('[ResourcePage] 预订会议室:', roomId, roomName);
@@ -53,8 +83,9 @@ const ResourcePage: React.FC = () => {
     Taro.navigateTo({ url: '/pages/desk-book/index' });
   };
 
-  const handleOpenElevatorSheet = () => {
-    setElevatorSlot('');
+  // 点击今日时段卡片时带入选中的时段
+  const handleOpenElevatorSheet = (preSelectedSlotId?: string) => {
+    setElevatorSlot(preSelectedSlotId || '');
     setShowElevatorSheet(true);
   };
 
@@ -77,14 +108,22 @@ const ResourcePage: React.FC = () => {
       Taro.showToast({ title: '您已预约该时段', icon: 'none' });
       return;
     }
+    const bookedCount = getElevatorBooked(elevatorSlot, elevatorDate);
     addBooking({
       type: 'elevator',
-      title: `货梯 ${slot.id}`,
+      title: `货梯 ${elevatorSlot}`,
       date: elevatorDate,
-      time: slot.timeRange
+      time: slot.timeRange,
+      capacity: slot.capacity,
+      capacityLeft: slot.capacity - bookedCount - 1
     });
     Taro.showToast({ title: '预约成功', icon: 'success' });
     setShowElevatorSheet(false);
+  };
+
+  // 点预订记录跳转详情
+  const handleBookingDetail = (id: string) => {
+    Taro.navigateTo({ url: `/pages/booking-detail/index?id=${id}` });
   };
 
   const typeMeta: Record<BookingType, { icon: string; bg: string; color: string; label: string }> = {
@@ -92,6 +131,25 @@ const ResourcePage: React.FC = () => {
     desk: { icon: '💺', bg: 'rgba(255, 125, 0, 0.1)', color: '#FF7D00', label: '工位' },
     elevator: { icon: '🛗', bg: 'rgba(15, 198, 194, 0.1)', color: '#0FC6C2', label: '货梯' }
   };
+
+  const typeOptions: { key: BookingFilterType; label: string }[] = [
+    { key: 'all', label: '全部' },
+    { key: 'meeting', label: '会议室' },
+    { key: 'desk', label: '工位' },
+    { key: 'elevator', label: '货梯' }
+  ];
+
+  const dateOptions: { key: BookingFilterDate; label: string }[] = [
+    { key: 'all', label: '全部' },
+    { key: 'today', label: '今天' },
+    { key: 'week', label: '未来一周' }
+  ];
+
+  const areaOptions: { key: DeskArea; label: string }[] = [
+    { key: 'all', label: '全部' },
+    { key: 'A', label: 'A区' },
+    { key: 'B', label: 'B区' }
+  ];
 
   return (
     <View className={styles.page}>
@@ -104,7 +162,7 @@ const ResourcePage: React.FC = () => {
             <Text className={styles.statLabel}>可用会议室</Text>
           </View>
           <View className={styles.statItem}>
-            <Text className={styles.statNum}>{bookings.length}</Text>
+            <Text className={styles.statNum}>{bookings.filter((b) => b.status === 'confirmed').length}</Text>
             <Text className={styles.statLabel}>我的预订</Text>
           </View>
           <View className={styles.statItem}>
@@ -145,7 +203,7 @@ const ResourcePage: React.FC = () => {
                 color: activeResource === 'desk' ? '#FF7D00' : 'transparent'
               }}
             >
-              <Text>{desks.filter((d) => d.status === 'available').length}个空闲</Text>
+              <Text>{filteredDesks.filter((d) => d.status === 'available').length}个空闲</Text>
             </View>
           </View>
           <View className={styles.typeCard} onClick={() => setActiveResource('elevator')}>
@@ -214,11 +272,24 @@ const ResourcePage: React.FC = () => {
                 <Text>去预订 ›</Text>
               </View>
             </View>
-            <Text style={{ fontSize: '24rpx', color: '#86909C', marginBottom: '16rpx' }}>
-              A座18F · 今日可预订{desks.filter((d) => d.status === 'available').length}个工位，日租 ¥50/天
+            {/* 区域筛选 */}
+            <View className={styles.filterRow}>
+              {areaOptions.map((opt) => (
+                <Text
+                  key={opt.key}
+                  className={classnames(styles.filterChip, deskArea === opt.key && styles.filterChipActive)}
+                  style={deskArea === opt.key ? { background: 'rgba(255, 125, 0, 0.15)', color: '#FF7D00', borderColor: '#FF7D00' } : undefined}
+                  onClick={() => setDeskArea(opt.key)}
+                >
+                  {opt.label}
+                </Text>
+              ))}
+            </View>
+            <Text style={{ fontSize: '24rpx', color: '#86909C', marginBottom: '16rpx', marginTop: 12 }}>
+              A座18F · 当前可预订{filteredDesks.filter((d) => d.status === 'available').length}个工位，日租 ¥50/天
             </Text>
             <View style={{ display: 'flex', flexWrap: 'wrap', gap: '16rpx' }}>
-              {desks
+              {filteredDesks
                 .filter((d) => d.status === 'available')
                 .map((desk) => (
                   <View
@@ -233,6 +304,7 @@ const ResourcePage: React.FC = () => {
                     }}
                   >
                     <Text style={{ fontSize: '28rpx', fontWeight: 600, color: '#00B42A' }}>{desk.code}</Text>
+                    <Text style={{ fontSize: 20, color: '#86909C', marginTop: 4 }}>{desk.area}</Text>
                   </View>
                 ))}
             </View>
@@ -243,7 +315,7 @@ const ResourcePage: React.FC = () => {
           <View className={styles.section}>
             <View className={styles.sectionHeader}>
               <Text className={styles.sectionTitle}>货梯时段（今日）</Text>
-              <View className={styles.sectionMore} onClick={handleOpenElevatorSheet}>
+              <View className={styles.sectionMore} onClick={() => handleOpenElevatorSheet()}>
                 <Text>预约 ›</Text>
               </View>
             </View>
@@ -255,7 +327,7 @@ const ResourcePage: React.FC = () => {
                   <View
                     key={slot.id}
                     className={classnames(styles.elevatorSlot, isFull && styles.elevatorSlotFull)}
-                    onClick={() => !isFull && handleOpenElevatorSheet()}
+                    onClick={() => !isFull && handleOpenElevatorSheet(slot.id)}
                   >
                     <Text className={styles.elevatorSlotTime}>{slot.timeRange}</Text>
                     <Text className={styles.elevatorSlotInfo}>
@@ -268,19 +340,49 @@ const ResourcePage: React.FC = () => {
           </View>
         )}
 
+        {/* 我的预订 - 带筛选 */}
         <View className={styles.section}>
           <View className={styles.sectionHeader}>
             <Text className={styles.sectionTitle}>我的预订</Text>
             <Text className={styles.sectionMore}>全部 ›</Text>
           </View>
-          {bookings.length === 0 ? (
+          {/* 类型筛选 */}
+          <View className={styles.filterRow}>
+            {typeOptions.map((opt) => (
+              <Text
+                key={opt.key}
+                className={classnames(styles.filterChip, filterType === opt.key && styles.filterChipActive)}
+                onClick={() => setFilterType(opt.key)}
+              >
+                {opt.label}
+              </Text>
+            ))}
+          </View>
+          {/* 日期筛选 */}
+          <View className={styles.filterRow} style={{ marginTop: 12, marginBottom: 20 }}>
+            {dateOptions.map((opt) => (
+              <Text
+                key={opt.key}
+                className={classnames(styles.filterChip, filterDate === opt.key && styles.filterChipActive)}
+                onClick={() => setFilterDate(opt.key)}
+              >
+                {opt.label}
+              </Text>
+            ))}
+          </View>
+          {filteredBookings.length === 0 ? (
             <Text className={styles.emptyHint}>暂无预订记录</Text>
           ) : (
-            bookings.map((b) => {
+            filteredBookings.map((b) => {
               const meta = typeMeta[b.type];
+              const isCancelled = b.status === 'cancelled';
               return (
-                <View key={b.id} className={styles.bookingItem}>
-                  <View className={styles.bookingIcon} style={{ background: meta.bg, color: meta.color }}>
+                <View
+                  key={b.id}
+                  className={classnames(styles.bookingItem, isCancelled && styles.bookingItemCancelled)}
+                  onClick={() => handleBookingDetail(b.id)}
+                >
+                  <View className={styles.bookingIcon} style={{ background: meta.bg, color: meta.color, opacity: isCancelled ? 0.5 : 1 }}>
                     <Text>{meta.icon}</Text>
                   </View>
                   <View className={styles.bookingInfo}>
@@ -297,7 +399,10 @@ const ResourcePage: React.FC = () => {
                       {b.date} {b.time}
                     </Text>
                   </View>
-                  <StatusTag status="approved" text={b.status === 'confirmed' ? '已确认' : '已取消'} />
+                  <StatusTag
+                    status={isCancelled ? 'rejected' : 'approved'}
+                    text={isCancelled ? '已取消' : '已确认'}
+                  />
                 </View>
               );
             })

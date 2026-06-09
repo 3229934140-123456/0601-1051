@@ -229,6 +229,63 @@
   color: $color-text-disabled;
 }
 
+.elevatorSlotGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16rpx;
+}
+
+.elevatorSlot {
+  padding: 24rpx 16rpx;
+  border-radius: $radius-md;
+  border: 2rpx solid $color-divider;
+  text-align: center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+  }
+}
+
+.elevatorSlotTime {
+  font-size: 28rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.elevatorSlotInfo {
+  font-size: 22rpx;
+  color: $color-text-tertiary;
+  display: block;
+}
+
+.elevatorSlotActive {
+  background: rgba(15, 198, 194, 0.1);
+  border-color: #0FC6C2;
+
+  .elevatorSlotTime {
+    color: #0FC6C2;
+  }
+  .elevatorSlotInfo {
+    color: #0FC6C2;
+  }
+}
+
+.elevatorSlotFull {
+  background: $color-bg-hover;
+  opacity: 0.7;
+
+  .elevatorSlotTime {
+    color: $color-text-disabled;
+    text-decoration: line-through;
+  }
+  .elevatorSlotInfo {
+    color: $color-text-disabled;
+  }
+}
+
 .bookingItem {
   display: flex;
   align-items: center;
@@ -258,6 +315,15 @@
   font-size: 32rpx;
 }
 
+.bookingTypeBadge {
+  display: inline-block;
+  padding: 2rpx 10rpx;
+  border-radius: 6rpx;
+  font-size: 20rpx;
+  margin-right: 8rpx;
+  vertical-align: middle;
+}
+
 .bookingInfo {
   flex: 1;
   min-width: 0;
@@ -275,4 +341,82 @@
   color: $color-text-tertiary;
   margin-top: 4rpx;
   @include text-ellipsis;
+}
+
+.emptyHint {
+  text-align: center;
+  padding: $spacing-xl 0;
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+
+.sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-top-left-radius: 32rpx;
+  border-top-right-radius: 32rpx;
+  padding: $spacing-lg $page-padding;
+  padding-bottom: calc($spacing-lg + env(safe-area-inset-bottom));
+  z-index: 101;
+}
+
+.sheetTitle {
+  font-size: 34rpx;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  display: block;
+}
+
+.sheetSubtitle {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+  display: block;
+}
+
+.sheetFooter {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+}
+
+.btnCancel {
+  flex: 1;
+  padding: 24rpx 0;
+  border-radius: $radius-button;
+  background: $color-bg-hover;
+  text-align: center;
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+}
+
+.btnSubmit {
+  flex: 2;
+  padding: 24rpx 0;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, #0FC6C2 0%, #0FB4C2 100%);
+  text-align: center;
+  font-size: $font-size-md;
+  color: #fff;
+  font-weight: $font-weight-medium;
+
+  &:active {
+    opacity: 0.9;
+  }
 }

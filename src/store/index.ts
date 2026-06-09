@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import dayjs from 'dayjs';
-import type { Visitor, ServiceTicket, Contact } from '@/types';
-import { myVisitors, tempPlates, ticketList, bookedMeetings, bookedDesks, meetingRooms, desks } from '@/data';
+import type { Visitor, ServiceTicket, BookingRecord, BookingType } from '@/types';
+import { myVisitors, tempPlates, ticketList, bookedMeetings, bookedDesks } from '@/data';
 
 interface TempPlate {
   id: string;
@@ -10,29 +10,30 @@ interface TempPlate {
   status: 'active' | 'expired';
 }
 
-interface BookedMeeting {
-  id: string;
-  roomName: string;
-  roomId: string;
-  date: string;
-  time: string;
-  status: 'confirmed' | 'cancelled';
-}
-
-interface BookedDesk {
-  id: string;
-  code: string;
-  deskId: string;
-  date: string;
-  status: 'confirmed' | 'cancelled';
-}
+const initBookings: BookingRecord[] = [
+  ...bookedMeetings.map((m: any) => ({
+    id: m.id,
+    type: 'meeting' as BookingType,
+    title: m.roomName,
+    date: m.date,
+    time: m.time,
+    status: m.status
+  })),
+  ...bookedDesks.map((d: any) => ({
+    id: d.id,
+    type: 'desk' as BookingType,
+    title: `工位 ${d.code}`,
+    date: d.date,
+    time: '全天',
+    status: d.status
+  }))
+];
 
 interface AppState {
   visitors: Visitor[];
   tempPlates: TempPlate[];
   tickets: ServiceTicket[];
-  bookedMeetings: BookedMeeting[];
-  bookedDesks: BookedDesk[];
+  bookings: BookingRecord[];
   ratings: Record<string, number>;
 
   addVisitor: (visitor: Omit<Visitor, 'id' | 'status' | 'hostName' | 'hostFloor'>) => void;
@@ -43,18 +44,18 @@ interface AppState {
 
   addTicket: (ticket: Omit<ServiceTicket, 'id' | 'status' | 'progress' | 'createTime' | 'updateTime'>) => void;
 
-  addBookedMeeting: (meeting: Omit<BookedMeeting, 'id' | 'status'>) => void;
-  addBookedDesk: (desk: Omit<BookedDesk, 'id' | 'status'>) => void;
+  addBooking: (booking: Omit<BookingRecord, 'id' | 'status'>) => void;
+  hasDeskBooking: (deskId: string, date: string) => boolean;
+  hasElevatorBooking: (slotId: string, date: string) => boolean;
 
   setRating: (ticketId: string, rating: number) => void;
 }
 
 export const useAppStore = create<AppState>((set, get) => ({
   visitors: myVisitors,
-  tempPlates: tempPlates,
+  tempPlates,
   tickets: ticketList,
-  bookedMeetings: bookedMeetings,
-  bookedDesks: bookedDesks,
+  bookings: initBookings,
   ratings: {},
 
   addVisitor: (visitor) => {
@@ -111,24 +112,26 @@ export const useAppStore = create<AppState>((set, get) => ({
     set((state) => ({ tickets: [newTicket, ...state.tickets] }));
   },
 
-  addBookedMeeting: (meeting) => {
-    console.log('[Store] addBookedMeeting:', meeting);
-    const newMeeting: BookedMeeting = {
-      ...meeting,
-      id: `bm${Date.now()}`,
+  addBooking: (booking) => {
+    console.log('[Store] addBooking:', booking);
+    const newBooking: BookingRecord = {
+      ...booking,
+      id: `b${Date.now()}`,
       status: 'confirmed'
     };
-    set((state) => ({ bookedMeetings: [newMeeting, ...state.bookedMeetings] }));
+    set((state) => ({ bookings: [newBooking, ...state.bookings] }));
   },
 
-  addBookedDesk: (desk) => {
-    console.log('[Store] addBookedDesk:', desk);
-    const newDesk: BookedDesk = {
-      ...desk,
-      id: `bd${Date.now()}`,
-      status: 'confirmed'
-    };
-    set((state) => ({ bookedDesks: [newDesk, ...state.bookedDesks] }));
+  hasDeskBooking: (deskId, date) => {
+    return get().bookings.some(
+      (b) => b.type === 'desk' && b.title.includes(deskId) && b.date === date && b.status === 'confirmed'
+    );
+  },
+
+  hasElevatorBooking: (slotId, date) => {
+    return get().bookings.some(
+      (b) => b.type === 'elevator' && b.title.includes(slotId) && b.date === date && b.status === 'confirmed'
+    );
   },
 
   setRating: (ticketId, rating) => {
@@ -139,4 +142,4 @@ export const useAppStore = create<AppState>((set, get) => ({
   }
 }));
 
-export { meetingRooms, desks };
+export { };

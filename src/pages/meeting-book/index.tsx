@@ -17,7 +17,8 @@ const MeetingBookPage: React.FC = () => {
   const router = useRouter();
   const roomId = router.params.roomId as string;
   const roomName = decodeURIComponent((router.params.roomName as string) || '会议室');
-  const addBookedMeeting = useAppStore((s) => s.addBookedMeeting);
+  const addBooking = useAppStore((s) => s.addBooking);
+  const bookings = useAppStore((s) => s.bookings);
 
   const room = useMemo(() => meetingRooms.find((r) => r.id === roomId) || meetingRooms[0], [roomId]);
 
@@ -41,12 +42,11 @@ const MeetingBookPage: React.FC = () => {
   });
 
   const unavailable = useMemo(() => {
-    if (roomId === '1') return ['09:00-10:00', '10:00-11:00'];
-    if (roomId === '2') return ['14:00-15:00', '15:00-16:00'];
-    if (roomId === '3') return ['11:00-12:00'];
-    if (roomId === '5') return ['09:00-10:00', '16:00-17:00'];
-    return [];
-  }, [roomId]);
+    const todayBooked = bookings.filter(
+      (b) => b.type === 'meeting' && b.title === (room?.name || roomName) && b.date === form.date
+    );
+    return todayBooked.map((b) => b.time);
+  }, [bookings, room, roomName, form.date]);
 
   const handleBack = () => Taro.navigateBack();
 
@@ -70,10 +70,23 @@ const MeetingBookPage: React.FC = () => {
 
   const handleSubmit = () => {
     if (!validate()) return;
+    // 防重复提交检查
+    const exists = bookings.some(
+      (b) =>
+        b.type === 'meeting' &&
+        b.title === (room?.name || roomName) &&
+        b.date === form.date &&
+        b.time === form.time &&
+        b.status === 'confirmed'
+    );
+    if (exists) {
+      Taro.showToast({ title: '该时段已被预订', icon: 'none' });
+      return;
+    }
     console.log('[MeetingBook] 提交预订:', form);
-    addBookedMeeting({
-      roomName: room?.name || roomName,
-      roomId,
+    addBooking({
+      type: 'meeting',
+      title: room?.name || roomName,
       date: form.date,
       time: form.time
     });

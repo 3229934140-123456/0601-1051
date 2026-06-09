@@ -8,8 +8,8 @@ import { desks } from '@/data/resource';
 import dayjs from 'dayjs';
 
 const DeskBookPage: React.FC = () => {
-  const addBookedDesk = useAppStore((s) => s.addBookedDesk);
-  const bookedDesks = useAppStore((s) => s.bookedDesks);
+  const addBooking = useAppStore((s) => s.addBooking);
+  const bookings = useAppStore((s) => s.bookings);
 
   const dates = useMemo(() => {
     return Array.from({ length: 7 }).map((_, i) => {
@@ -23,10 +23,6 @@ const DeskBookPage: React.FC = () => {
     });
   }, []);
 
-  const occupiedCodes = useMemo(() => {
-    return bookedDesks.filter((bd) => bd.date === dates[0].date).map((bd) => bd.code);
-  }, [bookedDesks, dates]);
-
   const [form, setForm] = useState({
     date: dates[0].date,
     deskId: '',
@@ -34,6 +30,13 @@ const DeskBookPage: React.FC = () => {
     applicant: '李明',
     purpose: ''
   });
+
+  // 按当前选择的日期动态判断占用状态
+  const occupiedCodes = useMemo(() => {
+    return bookings
+      .filter((b) => b.type === 'desk' && b.date === form.date && b.status === 'confirmed')
+      .map((b) => b.title.replace('工位 ', ''));
+  }, [bookings, form.date]);
 
   const totalPrice = form.deskCode ? 50 : 0;
 
@@ -48,16 +51,29 @@ const DeskBookPage: React.FC = () => {
       Taro.showToast({ title: '请输入申请人', icon: 'none' });
       return false;
     }
+    // 防重复提交
+    const exists = bookings.some(
+      (b) =>
+        b.type === 'desk' &&
+        b.title === `工位 ${form.deskCode}` &&
+        b.date === form.date &&
+        b.status === 'confirmed'
+    );
+    if (exists) {
+      Taro.showToast({ title: '该工位此日期已被预订', icon: 'none' });
+      return false;
+    }
     return true;
   };
 
   const handleSubmit = () => {
     if (!validate()) return;
     console.log('[DeskBook] 提交预订:', form);
-    addBookedDesk({
-      code: form.deskCode,
-      deskId: form.deskId,
-      date: form.date
+    addBooking({
+      type: 'desk',
+      title: `工位 ${form.deskCode}`,
+      date: form.date,
+      time: '全天'
     });
     Taro.showToast({ title: '预订成功', icon: 'success' });
     setTimeout(() => Taro.switchTab({ url: '/pages/resource/index' }), 1500);

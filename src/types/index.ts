@@ -134,3 +134,15 @@ export interface QuickEntry {
   iconColor: string;
   pagePath?: string;
 }
+
+// 预订统一类型
+export type BookingType = 'meeting' | 'desk' | 'elevator';
+
+export interface BookingRecord {
+  id: string;
+  type: BookingType;
+  title: string;
+  date: string;
+  time: string;
+  status: 'confirmed' | 'cancelled';
+}

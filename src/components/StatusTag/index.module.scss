@@ -1,0 +1,97 @@
+@use '@/styles/variables.scss' as *;
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+  font-size: $font-size-xs;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.success {
+  background: $color-tag-success-bg;
+  color: $color-success;
+}
+
+.warning {
+  background: $color-tag-warning-bg;
+  color: $color-warning;
+}
+
+.error {
+  background: $color-tag-error-bg;
+  color: $color-error;
+}
+
+.info {
+  background: $color-tag-info-bg;
+  color: $color-info;
+}
+
+.pending {
+  background: rgba(255, 125, 0, 0.1);
+  color: #FF7D00;
+}
+
+.processing {
+  background: rgba(22, 93, 255, 0.1);
+  color: #165DFF;
+}
+
+.completed {
+  background: rgba(0, 180, 42, 0.1);
+  color: #00B42A;
+}
+
+.expired {
+  background: rgba(134, 144, 156, 0.1);
+  color: #86909C;
+}
+
+.approved {
+  background: rgba(0, 180, 42, 0.1);
+  color: #00B42A;
+}
+
+.rejected {
+  background: rgba(245, 63, 63, 0.1);
+  color: #F53F3F;
+}
+
+.visited {
+  background: rgba(134, 144, 156, 0.1);
+  color: #86909C;
+}
+
+.available {
+  background: rgba(0, 180, 42, 0.1);
+  color: #00B42A;
+}
+
+.occupied {
+  background: rgba(245, 63, 63, 0.1);
+  color: #F53F3F;
+}
+
+.full {
+  background: rgba(134, 144, 156, 0.1);
+  color: #86909C;
+}
+
+.maintenance {
+  background: rgba(255, 125, 0, 0.1);
+  color: #FF7D00;
+}
+
+.reserved {
+  background: rgba(255, 125, 0, 0.1);
+  color: #FF7D00;
+}
+
+.unread {
+  background: rgba(245, 63, 63, 0.1);
+  color: #F53F3F;
+}

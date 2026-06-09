@@ -1,0 +1,292 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: $spacing-xl;
+}
+
+.header {
+  background: linear-gradient(135deg, #FF7D00 0%, #FF9A2E 100%);
+  padding: $spacing-xl $page-padding;
+  padding-top: calc($spacing-xl + env(safe-area-inset-top));
+  border-bottom-left-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+}
+
+.headerTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  margin-bottom: $spacing-xs;
+  display: block;
+}
+
+.headerDesc {
+  font-size: $font-size-sm;
+  color: rgba(255, 255, 255, 0.85);
+  display: block;
+}
+
+.unreadBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: $spacing-lg;
+  padding: $spacing-sm $spacing-lg;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: $radius-round;
+  font-size: $font-size-sm;
+  color: $color-text-white;
+}
+
+.unreadNum {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  margin: 0 8rpx;
+}
+
+.container {
+  padding: $spacing-md $page-padding 0;
+}
+
+.typeTabs {
+  display: flex;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: 6rpx;
+  margin-bottom: $spacing-md;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.typeTab {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-sm $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  border-radius: $radius-sm;
+  transition: all $transition-base;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.typeTabActive {
+  background: $color-message;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.messageCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.messageHeader {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: $spacing-sm;
+}
+
+.messageIcon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+  font-size: 32rpx;
+  position: relative;
+}
+
+.unreadDot {
+  position: absolute;
+  top: -4rpx;
+  right: -4rpx;
+  width: 16rpx;
+  height: 16rpx;
+  background: $color-error;
+  border-radius: $radius-round;
+  border: 4rpx solid $color-bg-card;
+}
+
+.messageContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.messageTitleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6rpx;
+}
+
+.messageTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  @include text-ellipsis;
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.messageTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.messagePreview {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  @include text-ellipsis-multi(2);
+  line-height: 1.5;
+}
+
+.ratingRow {
+  margin-top: $spacing-md;
+  padding-top: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ratingLabel {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+}
+
+.stars {
+  display: flex;
+  gap: 8rpx;
+}
+
+.star {
+  font-size: 36rpx;
+  color: $color-text-disabled;
+}
+
+.starActive {
+  color: $color-warning;
+}
+
+.rateBtn {
+  padding: 10rpx 28rpx;
+  background: linear-gradient(135deg, #FF7D00 0%, #FF9A2E 100%);
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-white;
+  font-weight: $font-weight-medium;
+}
+
+.contactSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.contactHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.contactTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.contactMore {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.contactAvatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, #165DFF 0%, #4080FF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+}
+
+.contactAvatarText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+}
+
+.contactInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.contactName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  display: block;
+}
+
+.contactRole {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+  @include text-ellipsis;
+}
+
+.contactPhone {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: $radius-round;
+  background: rgba(0, 180, 42, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+    transform: scale(0.95);
+  }
+}
+
+.contactPhoneIcon {
+  font-size: 32rpx;
+}

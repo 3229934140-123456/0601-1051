@@ -1,0 +1,296 @@
+@use '@/styles/variables.scss' as *;
+
+.page {
+  min-height: 100vh;
+  background: $color-bg-page;
+  padding-bottom: $spacing-xl;
+}
+
+.header {
+  background: linear-gradient(135deg, #0FC6C2 0%, #06A9A5 100%);
+  padding: $spacing-xl $page-padding;
+  padding-top: calc($spacing-xl + env(safe-area-inset-top));
+  border-bottom-left-radius: 32rpx;
+  border-bottom-right-radius: 32rpx;
+}
+
+.headerTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-white;
+  margin-bottom: $spacing-lg;
+  display: block;
+}
+
+.qrCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.qrTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.qrBox {
+  width: 360rpx;
+  height: 360rpx;
+  background: $color-bg-card;
+  border: 2rpx solid $color-border;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $spacing-md;
+  position: relative;
+}
+
+.qrCode {
+  font-size: 280rpx;
+  color: $color-text-primary;
+  line-height: 1;
+}
+
+.qrCorner {
+  position: absolute;
+  width: 40rpx;
+  height: 40rpx;
+  border: 6rpx solid $color-access;
+
+  &.tl {
+    top: -2rpx;
+    left: -2rpx;
+    border-right: none;
+    border-bottom: none;
+    border-top-left-radius: 8rpx;
+  }
+
+  &.tr {
+    top: -2rpx;
+    right: -2rpx;
+    border-left: none;
+    border-bottom: none;
+    border-top-right-radius: 8rpx;
+  }
+
+  &.bl {
+    bottom: -2rpx;
+    left: -2rpx;
+    border-right: none;
+    border-top: none;
+    border-bottom-left-radius: 8rpx;
+  }
+
+  &.br {
+    bottom: -2rpx;
+    right: -2rpx;
+    border-left: none;
+    border-top: none;
+    border-bottom-right-radius: 8rpx;
+  }
+}
+
+.qrName {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: 4rpx;
+}
+
+.qrEmpNo {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.qrRefresh {
+  margin-top: $spacing-md;
+  padding: 8rpx 24rpx;
+  background: rgba(15, 198, 194, 0.1);
+  border-radius: $radius-round;
+  font-size: $font-size-sm;
+  color: $color-access;
+}
+
+.container {
+  padding: $spacing-md $page-padding 0;
+}
+
+.actionRow {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.actionItem {
+  flex: 1;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+}
+
+.actionIcon {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: $spacing-sm;
+  font-size: 40rpx;
+  font-weight: $font-weight-bold;
+}
+
+.actionText {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.section {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.sectionMore {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+}
+
+.visitorItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.visitorAvatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  background: rgba(15, 198, 194, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+}
+
+.visitorAvatarText {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-access;
+}
+
+.visitorInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.visitorName {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  display: block;
+}
+
+.visitorMeta {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+  @include text-ellipsis;
+}
+
+.plateItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  &:first-child {
+    padding-top: 0;
+  }
+}
+
+.plateIcon {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-md;
+  background: linear-gradient(135deg, #165DFF 0%, #4080FF 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  flex-shrink: 0;
+}
+
+.plateIconText {
+  font-size: $font-size-xs;
+  color: $color-text-white;
+  font-weight: $font-weight-semibold;
+}
+
+.plateInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.plateNo {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  letter-spacing: 2rpx;
+}
+
+.plateExpire {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}

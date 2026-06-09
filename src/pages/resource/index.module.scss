@@ -385,6 +385,180 @@
   color: $color-text-tertiary;
 }
 
+.calendarSection {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-card;
+  padding: $spacing-lg;
+  margin-bottom: $spacing-md;
+}
+
+.calendarHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.calendarTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.calendarSwitch {
+  font-size: $font-size-sm;
+  color: #722ED1;
+}
+
+.calendarWeekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8rpx;
+  margin-bottom: 12rpx;
+}
+
+.calendarWeekday {
+  text-align: center;
+  font-size: 22rpx;
+  color: $color-text-tertiary;
+  padding: 8rpx 0;
+}
+
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8rpx;
+}
+
+.calendarDay {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 12rpx;
+  background: $color-bg-page;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rpx;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.85;
+  }
+}
+
+.calendarDayEmpty {
+  background: transparent;
+}
+
+.calendarDayToday {
+  background: rgba(114, 46, 209, 0.08);
+  border: 2rpx solid rgba(114, 46, 209, 0.3);
+}
+
+.calendarDaySelected {
+  background: #722ED1;
+
+  .calendarDayNum, .calendarDaySub {
+    color: #fff !important;
+  }
+}
+
+.calendarDayNum {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: $color-text-primary;
+  line-height: 1.2;
+}
+
+.calendarDaySub {
+  font-size: 18rpx;
+  color: $color-text-tertiary;
+  margin-top: 2rpx;
+  white-space: nowrap;
+}
+
+.calendarLegend {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.legendRow {
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  font-size: 20rpx;
+  color: $color-text-secondary;
+}
+
+.legendDot {
+  width: 16rpx;
+  height: 16rpx;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+// 分组标题
+.groupHeader {
+  display: flex;
+  align-items: center;
+  margin-top: $spacing-md;
+  margin-bottom: $spacing-sm;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $color-text-primary;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
+.groupCount {
+  margin-left: 8rpx;
+  padding: 2rpx 12rpx;
+  background: $color-bg-hover;
+  color: $color-text-tertiary;
+  border-radius: $radius-xs;
+  font-size: 20rpx;
+  font-weight: 400;
+}
+
+.groupEmpty {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  padding: $spacing-sm 0;
+  text-align: center;
+}
+
+// Tab-like status filter
+.statusTabs {
+  display: flex;
+  background: $color-bg-page;
+  border-radius: $radius-button;
+  padding: 6rpx;
+  margin-bottom: $spacing-md;
+}
+
+.statusTab {
+  flex: 1;
+  text-align: center;
+  padding: 14rpx 0;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  border-radius: $radius-button;
+  transition: all $transition-base;
+}
+
+.statusTabActive {
+  background: $color-bg-card;
+  color: $color-text-primary;
+  font-weight: 600;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
 .mask {
   position: fixed;
   top: 0;

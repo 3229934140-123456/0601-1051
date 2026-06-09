@@ -137,6 +137,13 @@ export interface QuickEntry {
 
 // 预订统一类型
 export type BookingType = 'meeting' | 'desk' | 'elevator';
+export type BookingDisplayStatus = 'upcoming' | 'completed' | 'cancelled';
+
+export interface TimelineEvent {
+  time: string;
+  action: '创建' | '确认' | '取消' | '完成';
+  remark?: string;
+}
 
 export interface BookingRecord {
   id: string;
@@ -158,4 +165,8 @@ export interface BookingRecord {
   // 通用
   purpose?: string;
   createTime?: string;
+  // 操作时间轴
+  timeline?: TimelineEvent[];
+  cancelTime?: string;
+  completeTime?: string;
 }

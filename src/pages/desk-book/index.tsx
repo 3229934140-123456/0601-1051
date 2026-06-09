@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { View, Text, Input } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useRouter } from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import { useAppStore } from '@/store';
@@ -10,8 +10,11 @@ import dayjs from 'dayjs';
 type DeskArea = 'all' | 'A' | 'B';
 
 const DeskBookPage: React.FC = () => {
+  const router = useRouter();
+  const preDate = router.params.date as string | undefined;
   const addBooking = useAppStore((s) => s.addBooking);
   const bookings = useAppStore((s) => s.bookings);
+  const isBookingPast = useAppStore((s) => s.isBookingPast);
   const [deskArea, setDeskArea] = useState<DeskArea>('all');
 
   const dates = useMemo(() => {
@@ -26,8 +29,16 @@ const DeskBookPage: React.FC = () => {
     });
   }, []);
 
+  const initialDate = useMemo(() => {
+    if (preDate) {
+      const exists = dates.find((d) => d.date === preDate && !d.disabled);
+      if (exists) return preDate;
+    }
+    return dates[0].date;
+  }, [preDate, dates]);
+
   const [form, setForm] = useState({
-    date: dates[0].date,
+    date: initialDate,
     deskId: '',
     deskCode: '',
     applicant: '李明',

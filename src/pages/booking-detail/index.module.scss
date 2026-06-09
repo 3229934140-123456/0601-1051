@@ -200,3 +200,72 @@
   margin-left: 12rpx;
   vertical-align: middle;
 }
+
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  padding-bottom: 28rpx;
+  position: relative;
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.timelineDot {
+  width: 20rpx;
+  height: 20rpx;
+  border-radius: 50%;
+  background: #C9CDD4;
+  margin-top: 8rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.timelineDotDone {
+  background: #722ED1;
+}
+
+.timelineDotActive {
+  background: #00B42A;
+  box-shadow: 0 0 0 8rpx rgba(0, 180, 42, 0.12);
+}
+
+.timelineDotCancelled {
+  background: #F53F3F;
+}
+
+.timelineLine {
+  position: absolute;
+  left: 9rpx;
+  top: 36rpx;
+  bottom: 0;
+  width: 2rpx;
+  background: #E5E6EB;
+}
+
+.timelineContent {
+  flex: 1;
+  min-width: 0;
+}
+
+.timelineAction {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.timelineTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.timelineRemark {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  margin-top: 4rpx;
+}

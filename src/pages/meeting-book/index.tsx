@@ -17,8 +17,10 @@ const MeetingBookPage: React.FC = () => {
   const router = useRouter();
   const roomId = router.params.roomId as string;
   const roomName = decodeURIComponent((router.params.roomName as string) || '会议室');
+  const preDate = router.params.date as string | undefined;
   const addBooking = useAppStore((s) => s.addBooking);
   const bookings = useAppStore((s) => s.bookings);
+  const isTimeSlotPast = useAppStore((s) => s.isTimeSlotPast);
 
   const room = useMemo(() => meetingRooms.find((r) => r.id === roomId) || meetingRooms[0], [roomId]);
 
@@ -34,19 +36,32 @@ const MeetingBookPage: React.FC = () => {
     });
   }, []);
 
+  const initialDate = useMemo(() => {
+    if (preDate) {
+      const exists = dates.find((d) => d.date === preDate && !d.disabled);
+      if (exists) return preDate;
+    }
+    return dates[0].date;
+  }, [preDate, dates]);
+
   const [form, setForm] = useState({
-    date: dates[0].date,
+    date: initialDate,
     time: '',
     title: '',
     attendees: 4
   });
 
   const unavailable = useMemo(() => {
-    const todayBooked = bookings.filter(
-      (b) => b.type === 'meeting' && b.title === (room?.name || roomName) && b.date === form.date
+    const bookedSet = new Set(
+      bookings
+        .filter(
+          (b) => b.type === 'meeting' && b.title === (room?.name || roomName) && b.date === form.date && b.status === 'confirmed'
+        )
+        .map((b) => b.time)
     );
-    return todayBooked.map((b) => b.time);
-  }, [bookings, room, roomName, form.date]);
+    // 已过时时段一并禁用
+    return timeSlots.filter((s) => bookedSet.has(s) || isTimeSlotPast(form.date, s, 'meeting'));
+  }, [bookings, room, roomName, form.date, isTimeSlotPast]);
 
   const handleBack = () => Taro.navigateBack();
 

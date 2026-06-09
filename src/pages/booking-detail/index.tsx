@@ -12,6 +12,7 @@ const BookingDetailPage: React.FC = () => {
   const bookingId = router.params.id as string;
   const bookings = useAppStore((s) => s.bookings);
   const cancelBooking = useAppStore((s) => s.cancelBooking);
+  const isBookingPast = useAppStore((s) => s.isBookingPast);
 
   const booking = useMemo(() => bookings.find((b) => b.id === bookingId), [bookings, bookingId]);
 
@@ -23,7 +24,7 @@ const BookingDetailPage: React.FC = () => {
 
   const meta = booking ? typeMeta[booking.type] : typeMeta.meeting;
   const isCancelled = booking?.status === 'cancelled';
-  const isPast = booking ? dayjs(booking.date).isBefore(dayjs(), 'day') : false;
+  const isPast = booking ? isBookingPast(booking) : false;
   const canCancel = !isCancelled && !isPast;
 
   const handleBack = () => Taro.navigateBack();
@@ -182,6 +183,36 @@ const BookingDetailPage: React.FC = () => {
             · 请提前 10 分钟到货梯口等候
             {'\n'}· 单次限重 {booking.capacity || 20} 吨，禁止超重
           </Text>
+        </View>
+      )}
+
+      {/* 操作记录时间轴 */}
+      {booking.timeline && booking.timeline.length > 0 && (
+        <View className={styles.section}>
+          <Text className={styles.sectionTitle}>操作记录</Text>
+          {booking.timeline.map((t, idx) => {
+            const isLast = idx === booking.timeline!.length - 1;
+            const dotClass = t.action === '取消'
+              ? styles.timelineDotCancelled
+              : t.action === '完成'
+                ? styles.timelineDotDone
+                : isLast
+                  ? styles.timelineDotActive
+                  : styles.timelineDotDone;
+            return (
+              <View key={idx} className={styles.timelineItem}>
+                <View className={classnames(styles.timelineDot, dotClass)} />
+                {!isLast && <View className={styles.timelineLine} />}
+                <View className={styles.timelineContent}>
+                  <Text className={styles.timelineAction}>
+                    {t.action}
+                  </Text>
+                  <Text className={styles.timelineTime}>{t.time}</Text>
+                  {t.remark && <Text className={styles.timelineRemark}>{t.remark}</Text>}
+                </View>
+              </View>
+            );
+          })}
         </View>
       )}
 
